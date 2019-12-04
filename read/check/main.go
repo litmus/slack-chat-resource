@@ -9,7 +9,7 @@ import (
     "fmt"
     //"strings"
     //"net/http"
-    "github.com/jleben/slack-chat-resource/utils"
+    "github.com/litmus/slack-chat-resource/utils"
     "github.com/nlopes/slack"
 )
 
@@ -98,7 +98,7 @@ func get_messages(request *utils.CheckRequest, slack_client *slack.Client) *slac
     params.Count = 100
 
     var history *slack.History
-    history, err := slack_client.GetChannelHistory(request.Source.ChannelId, params)
+    history, err := slack_client.GetGroupHistory(request.Source.ChannelId, params)
     if err != nil {
         fatal("getting messages.", err)
     }
@@ -162,8 +162,12 @@ func match_replies(message *slack.Message, request *utils.CheckRequest, slack_cl
     if message.Msg.ReplyCount == 0 {
         return false
     }
-
-    replies, err := slack_client.GetChannelReplies(request.Source.ChannelId, message.Msg.Timestamp)
+    
+    var slackconversationreplies = &slack.GetConversationRepliesParameters{
+        ChannelID: request.Source.ChannelId,
+        Timestamp: message.Msg.Timestamp,
+    } 
+    replies, _, _, err := slack_client.GetConversationReplies(slackconversationreplies)
     if err != nil {
         fatal("getting replies", err)
     }
