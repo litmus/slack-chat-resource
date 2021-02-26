@@ -10,7 +10,7 @@ import (
     //"strings"
     //"net/http"
     "github.com/litmus/slack-chat-resource/utils"
-    "github.com/nlopes/slack"
+    "github.com/slack-go/slack"
 )
 
 func main() {
