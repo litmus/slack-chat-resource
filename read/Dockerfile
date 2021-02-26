@@ -1,5 +1,6 @@
 
 FROM golang:alpine as build-env
+ENV GO111MODULE=off
 RUN apk update
 RUN apk add git
 RUN go get github.com/slack-go/slack
